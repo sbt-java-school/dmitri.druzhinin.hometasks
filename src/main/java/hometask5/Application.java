@@ -11,12 +11,10 @@ public class Application {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
             while (true) {
                 try {
-                    System.out.print("Enter URL(q to quit): ");
+                    System.out.print("Enter URL: ");
                     String urlAddress = bufferedReader.readLine();
-                    if (urlAddress.equals("q")) {
-                        break;
-                    }
                     readContent(urlAddress);
+                    break;
                 } catch (BusinessException e) {
                     System.out.println(e.getMessage());
                 }
