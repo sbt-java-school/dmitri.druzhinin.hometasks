@@ -1,9 +1,6 @@
 package hometask6;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -30,6 +27,38 @@ public class ClassInfo {
         printAllMethods(clazz);
         printDeclaredFields(clazz);
         printGetters(clazz);
+//        printMembers(clazz.getMethods());
+//        printMembers(clazz.getConstructors());
+//        printMembers(clazz.getFields());
+    }
+
+    private static void printMembers(Member... members){
+        StringBuilder builder=new StringBuilder();
+        for(Member member: members){
+            int modifiers=member.getModifiers();
+            if(Modifier.isPublic(modifiers)){
+                builder.append("public ");
+            }else if(Modifier.isProtected(modifiers)){
+                builder.append("protected ");
+            }else if(Modifier.isPrivate(modifiers)){
+                builder.append("private ");
+            }
+
+            if(Modifier.isStatic(modifiers)){
+                builder.append("static ");
+            }
+            if(Modifier.isAbstract(modifiers)){
+                builder.append("abstract ");
+            }
+            if(Modifier.isNative(modifiers)){
+                builder.append("native ");
+            }
+            if(Modifier.isFinal(modifiers)){
+                builder.append("final ");
+            }
+            builder.append(member.getName()+"\n");
+        }
+        System.out.println(builder);
     }
 
     private static void printHierarchy(Class<?> clazz) {
