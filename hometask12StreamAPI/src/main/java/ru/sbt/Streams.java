@@ -3,8 +3,9 @@ package ru.sbt;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
-public class Streams<T> {
+public class Streams<T> {Stream
     private Collection<T> source;
     private Streams<T> head;
     private Streams<T> previous;
