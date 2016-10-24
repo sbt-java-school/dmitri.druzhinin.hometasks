@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class JdbcTemplate {
     private String JDBC_URL = "jdbc:mysql://localhost:3306/";//на реальном проекте эти данные в полях не хранятся.
-    private String USER_NAME = "coderDima";
-    private String PASSWORD = "";
+    private String USER_NAME = "coder";
+    private String PASSWORD = "12";
 
     public <T> T execute(JdbcAction<T> action) {
         try (Connection connection = DriverManager.getConnection(JDBC_URL, USER_NAME, PASSWORD)) {

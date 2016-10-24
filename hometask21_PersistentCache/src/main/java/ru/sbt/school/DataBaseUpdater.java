@@ -14,11 +14,11 @@ import java.sql.Statement;
  */
 public class DataBaseUpdater {
     private String JDBC_URL = "jdbc:mysql://localhost:3306/";//на реальном проекте эти данные в полях не хранятся.
-    private String USER_NAME = "coderDima";
-    private String PASSWORD = "";
+    private String USER_NAME = "coder";
+    private String PASSWORD = "12";
 
     public static void main(String[] args) {
-        new DataBaseUpdater().executeScript("/home/dima/IdeaProjects/Easy/hometask21_PersistentCache/src/main/sql/invokes.sql");
+        new DataBaseUpdater().executeScript("hometask21_PersistentCache/src/main/sql/invokes.sql");
     }
 
     public void executeScript(String fileName) {
