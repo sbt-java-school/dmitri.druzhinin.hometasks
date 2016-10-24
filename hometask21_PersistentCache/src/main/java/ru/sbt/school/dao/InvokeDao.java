@@ -54,18 +54,19 @@ public class InvokeDao {
     }
 
     private InputStream objectToInputStream(Object object) {
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            new ObjectOutputStream(out).writeObject(object);
-            return new ByteArrayInputStream(out.toByteArray());
+        try(ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream out=new ObjectOutputStream(byteArrayOutputStream) ) {
+            out.writeObject(object);
+            out.flush();
+            return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             throw new IllegalStateException("Serialization error" + e);
         }
     }
 
-    private Object inputStreamToObject(InputStream in) {
-        try {
-            return new ObjectInputStream(in).readObject();
+    private Object inputStreamToObject(InputStream inputStream) {
+        try(ObjectInputStream in=new ObjectInputStream(inputStream)) {
+            return in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             throw new IllegalStateException("Serialization error" + e);
         }
