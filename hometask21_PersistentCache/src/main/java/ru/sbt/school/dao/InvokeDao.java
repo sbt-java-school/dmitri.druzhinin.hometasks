@@ -5,6 +5,7 @@ import ru.sbt.school.entities.Invoke;
 
 import java.io.*;
 import java.lang.reflect.Method;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Optional;
@@ -45,6 +46,7 @@ public class InvokeDao {
             logger.info("invokeDao.create()");
             try (PreparedStatement statement = connection.prepareStatement("insert into cache.invokes (delegate, method, args, result) values(?, ?, ?, ?)")) {
                 statement.setBlob(1, objectToInputStream(invoke.getDelegate()));
+
                 statement.setString(2, invoke.getMethod().getName());
                 statement.setBlob(3, objectToInputStream(invoke.getArgs()));
                 statement.setBlob(4, objectToInputStream(invoke.getResult()));

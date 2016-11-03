@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="680.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.newlinesoft.view.controllers.CreatorController">
+   <children>
+      <Label layoutX="66.0" layoutY="51.0" text="Recipe name" />
+      <TextField id="nameTextField" layoutX="66.0" layoutY="76.0" />
+      <TextArea fx:id="descriptionTextArea" layoutX="390.0" layoutY="77.0" prefHeight="124.0" prefWidth="274.0" />
+      <Label layoutX="390.0" layoutY="51.0" text="Recipe description" />
+      <Label layoutX="67.0" layoutY="139.0" prefHeight="0.0" prefWidth="137.0" text="Recipe ingredients" />
+      <Button layoutX="548.0" layoutY="443.0" mnemonicParsing="false" onAction="#createRecipe" text="Create recipe" />
+      <ChoiceBox id="choiceBox0" layoutX="66.0" layoutY="169.0" onAction="#choiceBoxSelected" prefWidth="150.0" />
+      <ChoiceBox id="choiceBox1" layoutX="66.0" layoutY="214.0" onAction="#choiceBoxSelected" prefWidth="150.0"> </ChoiceBox>
+      <ChoiceBox id="choiceBox2" layoutX="66.0" layoutY="273.0" onAction="#choiceBoxSelected" prefWidth="150.0" />
+      <ChoiceBox id="choiceBox3" layoutX="66.0" layoutY="324.0" prefWidth="150.0" />
+      <TextField id="textField0" layoutX="246.0" layoutY="169.0" prefHeight="26.0" prefWidth="55.0" text="0" />
+      <TextField id="textField1" layoutX="246.0" layoutY="214.0" prefHeight="26.0" prefWidth="55.0" text="0" />
+      <TextField id="textField2" layoutX="246.0" layoutY="273.0" prefHeight="26.0" prefWidth="55.0" text="0" />
+      <TextField id="textField3" layoutX="246.0" layoutY="324.0" prefHeight="26.0" prefWidth="55.0" text="0" />
+      <Label id="label0" layoutX="318.0" layoutY="174.0" text="---" />
+      <Label id="label1" layoutX="317.0" layoutY="219.0" text="---" />
+      <Label id="label2" layoutX="318.0" layoutY="278.0" text="---" />
+      <Label id="label3" layoutX="318.0" layoutY="329.0" text="---" />
+      <Button layoutX="483.0" layoutY="331.0" mnemonicParsing="false" onAction="#createIngredient" text="Create new ingredient" />
+      <TextField id="newIngredientNameTextField" layoutX="520.0" layoutY="254.0" prefWidth="127.0" />
+      <TextField id="newIngredientMeasureUnitTextField" layoutX="520.0" layoutY="293.0" prefHeight="26.0" prefWidth="127.0" />
+      <Label layoutX="373.0" layoutY="259.0" text="New ingredient name" />
+      <Label layoutX="418.0" layoutY="298.0" text="Measure unit" />
+      <Button layoutX="527.0" layoutY="372.0" mnemonicParsing="false" onAction="#toDeleteIngredient" text="All ingredients..." />
+   </children>
+</Pane>
