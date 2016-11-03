@@ -1,4 +1,4 @@
-package ru.newlinesoft.view.controllers;
+package ru.sbt.view.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -9,12 +9,12 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
-import ru.newlinesoft.dao.IngredientDao;
-import ru.newlinesoft.dao.RecipeDao;
-import ru.newlinesoft.entities.Ingredient;
-import ru.newlinesoft.entities.Recipe;
-import ru.newlinesoft.view.SpringFxmlLoader;
-import ru.newlinesoft.view.ViewUtils;
+import ru.sbt.dao.IngredientDao;
+import ru.sbt.dao.RecipeDao;
+import ru.sbt.entities.Ingredient;
+import ru.sbt.entities.Recipe;
+import ru.sbt.view.SpringFxmlLoader;
+import ru.sbt.view.ViewUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;

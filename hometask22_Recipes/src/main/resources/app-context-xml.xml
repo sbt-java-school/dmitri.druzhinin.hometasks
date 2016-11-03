@@ -26,51 +26,51 @@
     </bean>
 
     <bean id="recipeDao"
-          class="ru.newlinesoft.dao.RecipeDao">
+          class="ru.sbt.dao.RecipeDao">
         <constructor-arg index="0" ref="dataSource"/>
         <constructor-arg index="1" ref="jdbcTemplate"/>
 
     </bean>
 
     <bean id="ingredientDao"
-          class="ru.newlinesoft.dao.IngredientDao">
+          class="ru.sbt.dao.IngredientDao">
         <constructor-arg index="0" ref="jdbcTemplate"/>
         <constructor-arg index="1" ref="insertIngredient"/>
     </bean>
 
     <bean id="insertIngredient"
-          class="ru.newlinesoft.dao.operation.InsertIngredient">
+          class="ru.sbt.dao.operation.InsertIngredient">
         <constructor-arg index="0" ref="dataSource"/>
     </bean>
 
     <bean id="mainController"
-          class="ru.newlinesoft.view.controllers.MainController">
+          class="ru.sbt.view.controllers.MainController">
         <constructor-arg index="0" ref="recipeDao"/>
     </bean>
 
     <bean id="creatorController"
-          class="ru.newlinesoft.view.controllers.CreatorController" scope="prototype">
+          class="ru.sbt.view.controllers.CreatorController" scope="prototype">
         <constructor-arg index="0" ref="recipeDao"/>
         <constructor-arg index="1" ref="ingredientDao"/>
         <constructor-arg index="2" ref="mainController"/>
     </bean>
 
     <bean id="updaterController"
-          class="ru.newlinesoft.view.controllers.UpdaterController" scope="prototype">
+          class="ru.sbt.view.controllers.UpdaterController" scope="prototype">
         <constructor-arg index="0" ref="recipeDao"/>
         <constructor-arg index="1" ref="ingredientDao"/>
         <constructor-arg index="2" ref="mainController"/>
     </bean>
 
     <bean id="abstractContoller"
-          class="ru.newlinesoft.view.controllers.AbstractController" abstract="true">
+          class="ru.sbt.view.controllers.AbstractController" abstract="true">
 
         <constructor-arg index="0" ref="recipeDao"/>
         <constructor-arg index="1" ref="ingredientDao"/>
         <constructor-arg index="2" ref="mainController"/>
     </bean>
     <bean id="deleteIngredientsController"
-          class="ru.newlinesoft.view.controllers.DeleteIngredientsController">
+          class="ru.sbt.view.controllers.DeleteIngredientsController">
         <constructor-arg index="0" ref="ingredientDao"/>
     </bean>
 

@@ -1,4 +1,4 @@
-package ru.newlinesoft.entities;
+package ru.sbt.entities;
 
 
 public class Ingredient {

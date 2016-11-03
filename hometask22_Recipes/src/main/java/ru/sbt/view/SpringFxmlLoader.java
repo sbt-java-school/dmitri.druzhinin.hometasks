@@ -1,4 +1,4 @@
-package ru.newlinesoft.view;
+package ru.sbt.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

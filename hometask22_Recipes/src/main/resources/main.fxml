@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="551.0" prefWidth="1000.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.newlinesoft.view.controllers.MainController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="551.0" prefWidth="1000.0" stylesheets="@theme.css" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.sbt.view.controllers.MainController">
    <children>
       <ListView fx:id="recipesListView" editable="true" layoutX="89.0" layoutY="45.0" onMouseClicked="#chooseRecipe" prefHeight="378.0" prefWidth="247.0" />
       <Label layoutX="181.0" layoutY="14.0" prefHeight="16.0" prefWidth="128.0" text="Recipes" />

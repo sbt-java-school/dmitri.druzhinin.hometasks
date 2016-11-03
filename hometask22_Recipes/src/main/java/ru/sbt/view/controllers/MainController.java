@@ -1,4 +1,4 @@
-package ru.newlinesoft.view.controllers;
+package ru.sbt.view.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -10,10 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
-import ru.newlinesoft.dao.RecipeDao;
-import ru.newlinesoft.entities.Ingredient;
-import ru.newlinesoft.entities.Recipe;
-import ru.newlinesoft.view.SpringFxmlLoader;
+import ru.sbt.dao.RecipeDao;
+import ru.sbt.entities.Ingredient;
+import ru.sbt.entities.Recipe;
+import ru.sbt.view.SpringFxmlLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;

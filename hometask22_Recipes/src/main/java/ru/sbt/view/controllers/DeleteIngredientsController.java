@@ -1,4 +1,4 @@
-package ru.newlinesoft.view.controllers;
+package ru.sbt.view.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -8,9 +8,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
-import ru.newlinesoft.dao.IngredientDao;
-import ru.newlinesoft.entities.Ingredient;
-import ru.newlinesoft.view.ViewUtils;
+import ru.sbt.dao.IngredientDao;
+import ru.sbt.entities.Ingredient;
+import ru.sbt.view.ViewUtils;
 
 import java.util.List;
 

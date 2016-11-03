@@ -1,4 +1,4 @@
-package ru.newlinesoft.view.controllers;
+package ru.sbt.view.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,11 +6,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
-import org.springframework.dao.DuplicateKeyException;
-import ru.newlinesoft.dao.IngredientDao;
-import ru.newlinesoft.dao.RecipeDao;
-import ru.newlinesoft.entities.Recipe;
-import ru.newlinesoft.view.ViewUtils;
+import ru.sbt.dao.IngredientDao;
+import ru.sbt.dao.RecipeDao;
+import ru.sbt.entities.Recipe;
 
 import java.util.*;
 

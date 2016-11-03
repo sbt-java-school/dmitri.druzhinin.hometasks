@@ -1,4 +1,4 @@
-package ru.newlinesoft.dao.operation;
+package ru.sbt.dao.operation;
 
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.SqlUpdate;

@@ -1,10 +1,10 @@
-package ru.newlinesoft.dao;
+package ru.sbt.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.transaction.annotation.Transactional;
-import ru.newlinesoft.dao.operation.InsertIngredient;
-import ru.newlinesoft.entities.Ingredient;
+import ru.sbt.dao.operation.InsertIngredient;
+import ru.sbt.entities.Ingredient;
 
 import java.util.HashMap;
 import java.util.List;

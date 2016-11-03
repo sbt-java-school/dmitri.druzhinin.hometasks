@@ -1,4 +1,4 @@
-package ru.newlinesoft.entities;
+package ru.sbt.entities;
 
 import java.util.Map;
 
