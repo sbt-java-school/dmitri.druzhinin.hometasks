@@ -1,9 +1,7 @@
 package ru.sbt.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.object.SqlUpdate;
-import org.springframework.transaction.annotation.Transactional;
-import ru.sbt.dao.operation.InsertIngredient;
+import org.springframework.jdbc.object.BatchSqlUpdate;
 import ru.sbt.entities.Ingredient;
 
 import java.util.HashMap;
@@ -15,30 +13,42 @@ import java.util.Map;
  */
 public class IngredientDao {
     private JdbcTemplate jdbcTemplate;
-    private SqlUpdate insertIngredient;
+    private BatchSqlUpdate insertRecipeIngredients;
+    private static final String SQL_SELECT_ALL="select name, measure_unit from ingredients";
+    private static final String SQL_INSERT="insert into ingredients (name, measure_unit) values(?, ?)";
+    private static final String SQL_DELETE="delete from ingredients where name=?";
 
-    public IngredientDao(JdbcTemplate jdbcTemplate, InsertIngredient insertIngredient) {
+    public IngredientDao(JdbcTemplate jdbcTemplate, BatchSqlUpdate insertRecipeIngredients) {
         this.jdbcTemplate = jdbcTemplate;
-        this.insertIngredient = insertIngredient;
+        this.insertRecipeIngredients=insertRecipeIngredients;
     }
 
-    @Transactional(readOnly = true)
     public List<Ingredient> findAll() {
-        String sql = "select name, measure_unit from ingredients";
-        List<Ingredient> ingredients = jdbcTemplate.query(sql, (resultSet, rowNumber) -> new Ingredient(resultSet.getString(1), resultSet.getString(2)));
-        return ingredients;
+        return jdbcTemplate.query(SQL_SELECT_ALL, (resultSet, rowNumber) ->
+                new Ingredient(resultSet.getString(1), resultSet.getString(2)));
     }
 
-    @Transactional
     public void create(Ingredient ingredient) {
-        Map<String, String> parameterMap = new HashMap<>();
-        parameterMap.put("name", ingredient.getName());
-        parameterMap.put("measure_unit", ingredient.getMeasureUnit());
-        insertIngredient.updateByNamedParam(parameterMap);
+        jdbcTemplate.update(SQL_INSERT, ingredient.getName(), ingredient.getMeasureUnit());
     }
 
-    @Transactional
-    public int deleteByName(String ingredientName) {
-        return jdbcTemplate.update("delete from ingredients where name=?", preparedStatemenent -> preparedStatemenent.setString(1, ingredientName));
+    public int deleteByName(String name) {
+        return jdbcTemplate.update(SQL_DELETE, name);
+    }
+
+    /**
+     * Добавляет ингредиенты и их количества определенному рецепту
+     * @param recipeName название рецепта, которому добавляются ингредиенты
+     * @param ingredients добавляемые ингредиенты
+     */
+    private void addIngredientsByRecipeName(String recipeName, Map<Ingredient, Integer> ingredients) {
+        for (Map.Entry<Ingredient, Integer> ingredientEntry : ingredients.entrySet()) {
+            Map<String, Object> parameterMap = new HashMap<>();
+            parameterMap.put("recipe_name", recipeName);
+            parameterMap.put("ingredient_name", ingredientEntry.getKey().getName());
+            parameterMap.put("amount", ingredientEntry.getValue());
+            insertRecipeIngredients.updateByNamedParam(parameterMap);
+        }
+        insertRecipeIngredients.flush();
     }
 }

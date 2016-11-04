@@ -12,6 +12,9 @@ public class Recipe {
         this.description = description;
         this.ingredients = ingredients;
     }
+    public Recipe(String name, String description){
+        this(name, description, null);
+    }
 
     public String getName() {
         return name;
@@ -23,6 +26,10 @@ public class Recipe {
 
     public Map<Ingredient, Integer> getIngredients() {
         return ingredients;
+    }
+
+    public void setIngredients(Map<Ingredient, Integer> ingredients) {
+        this.ingredients = ingredients;
     }
 
     @Override
