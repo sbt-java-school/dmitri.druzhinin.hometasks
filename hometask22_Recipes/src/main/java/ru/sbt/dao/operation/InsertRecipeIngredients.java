@@ -6,6 +6,9 @@ import org.springframework.jdbc.object.BatchSqlUpdate;
 import javax.sql.DataSource;
 import java.sql.Types;
 
+/**
+ * Класс, представляющий операцию вставок в таблицу связей.
+ */
 public class InsertRecipeIngredients extends BatchSqlUpdate {
     private static final String SQL_INSERT_RECIPE_INGREDIENTS = "insert into ingredients_of_recipes (rname, iname, amount) " +
             "values(:recipe_name, :ingredient_name, :amount)";

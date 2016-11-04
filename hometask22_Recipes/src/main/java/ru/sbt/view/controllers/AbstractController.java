@@ -41,7 +41,7 @@ public abstract class AbstractController {
     @FXML
     protected TextArea descriptionTextArea;
 
-    public AbstractController(RecipeDao recipeDao, IngredientDao ingredientDao, MainController mainController) {
+    protected AbstractController(RecipeDao recipeDao, IngredientDao ingredientDao, MainController mainController) {
         this.recipeDao = recipeDao;
         this.ingredientDao = ingredientDao;
         this.mainController = mainController;

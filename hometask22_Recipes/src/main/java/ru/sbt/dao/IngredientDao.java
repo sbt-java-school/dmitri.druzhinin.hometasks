@@ -17,6 +17,7 @@ public class IngredientDao {
     private static final String SQL_SELECT_ALL="select name, measure_unit from ingredients";
     private static final String SQL_INSERT="insert into ingredients (name, measure_unit) values(?, ?)";
     private static final String SQL_DELETE="delete from ingredients where name=?";
+    private static final String SQL_DELETE_BY_RECIPE_NAME="delete from ingredients_of_recipes where rname=?";
 
     public IngredientDao(JdbcTemplate jdbcTemplate, BatchSqlUpdate insertRecipeIngredients) {
         this.jdbcTemplate = jdbcTemplate;
@@ -37,11 +38,11 @@ public class IngredientDao {
     }
 
     /**
-     * Добавляет ингредиенты и их количества определенному рецепту
-     * @param recipeName название рецепта, которому добавляются ингредиенты
-     * @param ingredients добавляемые ингредиенты
+     * Добавляет ингредиенты и их количества определенному рецепту.
+     * @param recipeName название рецепта, которому добавляются ингредиенты.
+     * @param ingredients добавляемые ингредиенты.
      */
-    private void addIngredientsByRecipeName(String recipeName, Map<Ingredient, Integer> ingredients) {
+    public void addByRecipeName(String recipeName, Map<Ingredient, Integer> ingredients) {
         for (Map.Entry<Ingredient, Integer> ingredientEntry : ingredients.entrySet()) {
             Map<String, Object> parameterMap = new HashMap<>();
             parameterMap.put("recipe_name", recipeName);
@@ -50,5 +51,13 @@ public class IngredientDao {
             insertRecipeIngredients.updateByNamedParam(parameterMap);
         }
         insertRecipeIngredients.flush();
+    }
+
+    /**
+     * Удаляет ингредиенты из таблицы связей по названию рецепта.
+     * @param recipeName название рецепта, чьи ингредиенты удаляются из таблицы связей.
+     */
+    public void deleteByRecipeName(String recipeName){
+        jdbcTemplate.update(SQL_DELETE_BY_RECIPE_NAME, recipeName);
     }
 }
