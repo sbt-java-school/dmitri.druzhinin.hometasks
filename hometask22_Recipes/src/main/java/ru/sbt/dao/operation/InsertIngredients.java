@@ -9,12 +9,12 @@ import java.sql.Types;
 /**
  * Класс, представляющий операцию вставок в таблицу связей.
  */
-public class InsertRecipeIngredients extends BatchSqlUpdate {
+public class InsertIngredients extends BatchSqlUpdate {
     private static final String SQL_INSERT_RECIPE_INGREDIENTS = "insert into ingredients_of_recipes (rname, iname, amount) " +
             "values(:recipe_name, :ingredient_name, :amount)";
     private static final int BATCH_SIZE = 10;
 
-    public InsertRecipeIngredients(DataSource dataSource) {
+    public InsertIngredients(DataSource dataSource) {
         super(dataSource, SQL_INSERT_RECIPE_INGREDIENTS);
         declareParameter(new SqlParameter(("recipe_name"), Types.VARCHAR));
         declareParameter(new SqlParameter(("ingredient_name"), Types.VARCHAR));

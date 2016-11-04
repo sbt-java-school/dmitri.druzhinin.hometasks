@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import ru.sbt.dao.IngredientDao;
 import ru.sbt.dao.RecipeDao;
 import ru.sbt.entities.Recipe;
+import ru.sbt.services.IngredientService;
+import ru.sbt.services.RecipeService;
 
 import java.util.*;
 
@@ -22,14 +24,14 @@ public class UpdaterController extends AbstractController {
     private Logger logger = getLogger(UpdaterController.class);
     private Recipe beforeChangeRecipe;
 
-    public UpdaterController(RecipeDao recipeDao, IngredientDao ingredientDao, MainController mainController) {
-        super(recipeDao, ingredientDao, mainController);
+    public UpdaterController(RecipeService recipeService, IngredientService ingredientService, MainController mainController) {
+        super(recipeService, ingredientService, mainController);
     }
 
     @FXML
     protected void initialize() {
         super.initialize();
-        beforeChangeRecipe = (recipeDao.findByName(mainController.getFocusedItem())).get();
+        beforeChangeRecipe = (recipeService.getByName(mainController.getFocusedItem())).get();
         descriptionTextArea.setText(beforeChangeRecipe.getDescription());
         Iterator<ChoiceBox> choiceBoxIterator = ingredientNameChoiceBoxes.iterator();
         Iterator<Label> labelIterator = measureUnitLabels.iterator();
@@ -45,7 +47,7 @@ public class UpdaterController extends AbstractController {
     @FXML
     private void saveChanges(ActionEvent event) {
         getRecipeFromView().ifPresent(recipe -> {
-            recipeDao.update(recipe);
+            recipeService.put(recipe);
             mainController.notifyUpdate(recipe);
             mainController.closeUpdaterStage();
             logger.info("The changes are saved to recipe " + recipe.getName());

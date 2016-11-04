@@ -8,8 +8,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
-import ru.sbt.dao.IngredientDao;
 import ru.sbt.entities.Ingredient;
+import ru.sbt.services.IngredientService;
 import ru.sbt.view.ViewUtils;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class DeleteIngredientsController {
     private static final String ERROR_SHOW = "Denied. This ingregient serves.";
     private Logger logger = getLogger(DeleteIngredientsController.class);
-    private IngredientDao ingredientDao;
+    private IngredientService ingredientService;
     private List<Ingredient> ingredientList;
     @FXML
     private TableView<Ingredient> ingredientsTableView;
@@ -32,13 +32,13 @@ public class DeleteIngredientsController {
     @FXML
     private TableColumn<Ingredient, String> unitColumn;
 
-    public DeleteIngredientsController(IngredientDao ingredientDao) {
-        this.ingredientDao = ingredientDao;
+    public DeleteIngredientsController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
     }
 
     @FXML
     private void initialize() {
-        ingredientList = ingredientDao.findAll();
+        ingredientList = ingredientService.getAll();
         updateIngredientsTableView();
         logger.info("DeleteIngredientsControlles::initialize()");
     }
@@ -55,7 +55,7 @@ public class DeleteIngredientsController {
         try {
             Ingredient focusedIngredient = ingredientsTableView.getFocusModel().getFocusedItem();
             if (focusedIngredient != null) {
-                ingredientDao.deleteByName(focusedIngredient.getName());
+                ingredientService.deleteByName(focusedIngredient.getName());
                 ingredientList.remove(focusedIngredient);
                 updateIngredientsTableView();
             }

@@ -4,8 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.slf4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
-import ru.sbt.dao.IngredientDao;
-import ru.sbt.dao.RecipeDao;
+import ru.sbt.services.BusinessException;
+import ru.sbt.services.IngredientService;
+import ru.sbt.services.RecipeService;
 import ru.sbt.view.ViewUtils;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -17,21 +18,21 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class CreatorController extends AbstractController {
     private Logger logger = getLogger(CreatorController.class);
 
-    public CreatorController(RecipeDao recipeDao, IngredientDao ingredientDao, MainController mainController) {
-        super(recipeDao, ingredientDao, mainController);
+    public CreatorController(RecipeService recipeService, IngredientService ingredientService, MainController mainController) {
+        super(recipeService, ingredientService, mainController);
     }
 
     @FXML
     private void createRecipe(ActionEvent event) {
         try {
             getRecipeFromView().ifPresent(recipe -> {
-                recipeDao.create(recipe);
+                recipeService.put(recipe);
                 mainController.notifyCreate(recipe);
                 mainController.closeCreatorStage();
             });
-        } catch (DuplicateKeyException e) {
+        } catch (BusinessException e) {
             logger.error("Attempt to create recipe with existing name in DB");
-            ViewUtils.errorShow("Don't repeat!");
+            ViewUtils.errorShow(e.getMessage());
         }
     }
 }

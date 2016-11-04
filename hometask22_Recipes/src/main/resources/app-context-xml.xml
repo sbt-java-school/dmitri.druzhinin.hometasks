@@ -9,71 +9,81 @@
 
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-          p:url="jdbc:mysql://localhost:3306/recipes_database"
-          p:username="coderDima"
-          p:password="">
-        <!--<c:property-placeholder-->
-        <!--location="/home/dima/IdeaProjects/myspring_easy/myspring-jdbc/src/main/resources/jdbc.properties"/>-->
+          p:url="jdbc:h2:~/Документы/recipes_database">
     </bean>
 
     <bean id="jdbcTemplate"
           class="org.springframework.jdbc.core.JdbcTemplate"
           p:dataSource-ref="dataSource"/>
 
+    <bean id="databaseCreator"
+          class="ru.sbt.DataBaseCreator">
+        <constructor-arg index="0" ref="jdbcTemplate"/>
+    </bean>
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
           p:dataSource-ref="dataSource">
     </bean>
 
+    <tx:annotation-driven/>
+
+
+    <!-- Dao -->
     <bean id="recipeDao"
           class="ru.sbt.dao.RecipeDao">
-        <constructor-arg index="0" ref="dataSource"/>
-        <constructor-arg index="1" ref="jdbcTemplate"/>
+        <constructor-arg index="0" ref="jdbcTemplate"/>
 
     </bean>
 
     <bean id="ingredientDao"
           class="ru.sbt.dao.IngredientDao">
         <constructor-arg index="0" ref="jdbcTemplate"/>
-        <constructor-arg index="1" ref="insertIngredient"/>
+        <constructor-arg index="1" ref="insertIngredients"/>
     </bean>
 
-    <bean id="insertIngredient"
-          class="ru.sbt.dao.operation.InsertIngredient">
+    <bean id="insertIngredients"
+          class="ru.sbt.dao.operation.InsertIngredients">
         <constructor-arg index="0" ref="dataSource"/>
     </bean>
 
+
+    <!-- Service-->
+    <bean id="recipeService"
+          class="ru.sbt.services.RecipeService">
+        <constructor-arg index="0" ref="recipeDao"/>
+        <constructor-arg index="1" ref="ingredientDao"/>
+    </bean>
+
+    <bean id="ingredientService"
+          class="ru.sbt.services.IngredientService">
+        <constructor-arg index="0" ref="ingredientDao"/>
+    </bean>
+
+
+
+    <!-- view -->
     <bean id="mainController"
           class="ru.sbt.view.controllers.MainController">
-        <constructor-arg index="0" ref="recipeDao"/>
+        <constructor-arg index="0" ref="recipeService"/>
     </bean>
 
     <bean id="creatorController"
           class="ru.sbt.view.controllers.CreatorController" scope="prototype">
-        <constructor-arg index="0" ref="recipeDao"/>
-        <constructor-arg index="1" ref="ingredientDao"/>
+        <constructor-arg index="0" ref="recipeService"/>
+        <constructor-arg index="1" ref="ingredientService"/>
         <constructor-arg index="2" ref="mainController"/>
     </bean>
 
     <bean id="updaterController"
           class="ru.sbt.view.controllers.UpdaterController" scope="prototype">
-        <constructor-arg index="0" ref="recipeDao"/>
-        <constructor-arg index="1" ref="ingredientDao"/>
+        <constructor-arg index="0" ref="recipeService"/>
+        <constructor-arg index="1" ref="ingredientService"/>
         <constructor-arg index="2" ref="mainController"/>
     </bean>
 
-    <bean id="abstractContoller"
-          class="ru.sbt.view.controllers.AbstractController" abstract="true">
-
-        <constructor-arg index="0" ref="recipeDao"/>
-        <constructor-arg index="1" ref="ingredientDao"/>
-        <constructor-arg index="2" ref="mainController"/>
-    </bean>
     <bean id="deleteIngredientsController"
           class="ru.sbt.view.controllers.DeleteIngredientsController">
-        <constructor-arg index="0" ref="ingredientDao"/>
+        <constructor-arg index="0" ref="ingredientService"/>
     </bean>
-
-    <tx:annotation-driven/>
 
 </beans>

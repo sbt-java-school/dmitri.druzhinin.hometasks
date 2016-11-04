@@ -1,18 +1,22 @@
 package ru.sbt.services;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import ru.sbt.dao.IngredientDao;
 import ru.sbt.entities.Ingredient;
 
 import java.util.List;
 
-public class IngredientService extends Service {
+public class IngredientService {
+    private final IngredientDao ingredientDao;
+
     public IngredientService(IngredientDao ingredientDao) {
-        super(ingredientDao);
+        this.ingredientDao=ingredientDao;
     }
 
     @Transactional(readOnly = true)
-    public List<Ingredient> getAll(String name){
+    public List<Ingredient> getAll(){
         return ingredientDao.findAll();
     }
 
@@ -24,7 +28,11 @@ public class IngredientService extends Service {
     @Transactional
     public void put(Ingredient ingredient){
         validate(ingredient);
-        ingredientDao.create(ingredient);
+        try {
+            ingredientDao.create(ingredient);
+        }catch (DuplicateKeyException e){
+            throw new BusinessException("Don't repeat!");
+        }
     }
 
     private void validate(Ingredient ingredient){
@@ -33,5 +41,9 @@ public class IngredientService extends Service {
         }
         validate(ingredient.getName());
     }
-
+    private void validate(String name){
+        if(name==null || (!StringUtils.hasText(name))){
+            throw new BusinessException("No ingredient name");
+        }
+    }
 }

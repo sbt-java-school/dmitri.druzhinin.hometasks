@@ -15,6 +15,7 @@ public class IngredientDao {
     private JdbcTemplate jdbcTemplate;
     private BatchSqlUpdate insertRecipeIngredients;
     private static final String SQL_SELECT_ALL="select name, measure_unit from ingredients";
+    private static final String SQL_SELECT_BY_RECIPE_NAME="select iname, measure_unit, amount from ingredients_of_recipes join ingredients on iname=ingredients.name where rname=?";
     private static final String SQL_INSERT="insert into ingredients (name, measure_unit) values(?, ?)";
     private static final String SQL_DELETE="delete from ingredients where name=?";
     private static final String SQL_DELETE_BY_RECIPE_NAME="delete from ingredients_of_recipes where rname=?";
@@ -51,6 +52,19 @@ public class IngredientDao {
             insertRecipeIngredients.updateByNamedParam(parameterMap);
         }
         insertRecipeIngredients.flush();
+    }
+
+    /**
+     * @return все ингредиенты и их количества для рецепта с именем recipeName.
+     */
+    public Map<Ingredient, Integer> getByRecipeName(String recipeName){
+        return jdbcTemplate.query(SQL_SELECT_BY_RECIPE_NAME, preparedStatement->preparedStatement.setString(1, recipeName), resultSet->{
+            Map<Ingredient, Integer> ingredients= new HashMap<>();
+            while(resultSet.next()){
+                ingredients.put(new Ingredient(resultSet.getString(1), resultSet.getString(2)), resultSet.getInt(3));
+            }
+            return ingredients;
+        });
     }
 
     /**

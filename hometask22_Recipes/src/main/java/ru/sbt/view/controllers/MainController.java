@@ -10,9 +10,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
-import ru.sbt.dao.RecipeDao;
 import ru.sbt.entities.Ingredient;
 import ru.sbt.entities.Recipe;
+import ru.sbt.services.RecipeService;
 import ru.sbt.view.SpringFxmlLoader;
 
 import java.io.IOException;
@@ -43,13 +43,13 @@ public class MainController {
     @FXML
     private ListView<Integer> amountListView;
 
-    private RecipeDao recipeDao;
+    private RecipeService recipeService;
     private List<Recipe> recipeList;
     private Stage creatorStage;
     private Stage updaterStage;
 
-    public MainController(RecipeDao recipeDao) {
-        this.recipeDao = recipeDao;
+    public MainController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
     public void closeCreatorStage() {
@@ -101,7 +101,7 @@ public class MainController {
     private void deleteRecipe(ActionEvent event) {
         String recipeName = recipesListView.getFocusModel().getFocusedItem();
         if (recipeName != null) {
-            recipeDao.deleteByName(recipeName);
+            recipeService.deleteByName(recipeName);
             recipeList.removeIf(recipe -> recipe.getName().equals(recipeName));
             updateRecipesListView();
             logger.info(recipeName + " deleted");
@@ -133,7 +133,7 @@ public class MainController {
     private void getRecipeByName(ActionEvent event) {
         recipeList = new ArrayList<>();
         if (!searchTextField.getText().equals("")) {
-            recipeDao.findByName(searchTextField.getText()).ifPresent(recipe -> recipeList.add(recipe));
+            recipeService.getByName(searchTextField.getText()).ifPresent(recipe -> recipeList.add(recipe));
             updateRecipesListView();
         }
     }
@@ -144,17 +144,20 @@ public class MainController {
 
     @FXML
     private void getAllRecipes(ActionEvent event) {
-        recipeList = recipeDao.findAll();
+        recipeList = recipeService.getAll();
         updateRecipesListView();
     }
 
     @FXML
     private void chooseRecipe(MouseEvent event) {
-        Recipe recipe = recipeList.get(recipesListView.getFocusModel().getFocusedIndex());
-        descriptionTextArea.setText(recipe.getDescription());
-        ingredientColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        measureUnitColumn.setCellValueFactory(new PropertyValueFactory<>("measureUnit"));
-        ingredientsTableView.setItems(FXCollections.observableArrayList(recipe.getIngredients().keySet()));
-        amountListView.setItems(FXCollections.observableArrayList(recipe.getIngredients().values()));
+        int recipeIndex = recipesListView.getFocusModel().getFocusedIndex();
+        if (recipeIndex !=-1) {
+            Recipe recipe = recipeList.get(recipeIndex);
+            descriptionTextArea.setText(recipe.getDescription());
+            ingredientColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            measureUnitColumn.setCellValueFactory(new PropertyValueFactory<>("measureUnit"));
+            ingredientsTableView.setItems(FXCollections.observableArrayList(recipe.getIngredients().keySet()));
+            amountListView.setItems(FXCollections.observableArrayList(recipe.getIngredients().values()));
+        }
     }
 }

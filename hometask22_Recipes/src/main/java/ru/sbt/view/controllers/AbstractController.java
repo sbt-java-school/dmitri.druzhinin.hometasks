@@ -9,10 +9,11 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.springframework.dao.DuplicateKeyException;
-import ru.sbt.dao.IngredientDao;
-import ru.sbt.dao.RecipeDao;
 import ru.sbt.entities.Ingredient;
 import ru.sbt.entities.Recipe;
+import ru.sbt.services.BusinessException;
+import ru.sbt.services.IngredientService;
+import ru.sbt.services.RecipeService;
 import ru.sbt.view.SpringFxmlLoader;
 import ru.sbt.view.ViewUtils;
 
@@ -28,8 +29,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public abstract class AbstractController {
     private static Logger logger = getLogger(AbstractController.class);
 
-    protected RecipeDao recipeDao;
-    protected IngredientDao ingredientDao;
+    protected RecipeService recipeService;
+    protected IngredientService ingredientService;
     protected MainController mainController;
     protected Map<String, String> measureUnitByIngredientName = new HashMap<>();
     protected static final int choiceBoxNumber = 4;
@@ -41,9 +42,9 @@ public abstract class AbstractController {
     @FXML
     protected TextArea descriptionTextArea;
 
-    protected AbstractController(RecipeDao recipeDao, IngredientDao ingredientDao, MainController mainController) {
-        this.recipeDao = recipeDao;
-        this.ingredientDao = ingredientDao;
+    protected AbstractController(RecipeService recipeService, IngredientService ingredientService, MainController mainController) {
+        this.recipeService=recipeService;
+        this.ingredientService=ingredientService;
         this.mainController = mainController;
     }
 
@@ -66,7 +67,7 @@ public abstract class AbstractController {
             amountTextFields.add(textField);
             measureUnitLabels.add((Label) parent.lookup("#label" + i));
         }
-        measureUnitByIngredientName = ingredientDao.findAll().stream().collect(Collectors.toMap(k -> k.getName(), v -> v.getMeasureUnit()));
+        measureUnitByIngredientName = ingredientService.getAll().stream().collect(Collectors.toMap(k -> k.getName(), v -> v.getMeasureUnit()));
         updateChoiceBoxes();
         logger.info("AbstractController::initialize()");
     }
@@ -85,10 +86,10 @@ public abstract class AbstractController {
         TextField measureUnitTextField = (TextField) descriptionTextArea.getParent().lookup("#newIngredientMeasureUnitTextField");
         if ((!ingredientNameTextField.getText().equals("")) && (!measureUnitTextField.getText().equals(""))) {
             try {
-                ingredientDao.create(new Ingredient(ingredientNameTextField.getText(), measureUnitTextField.getText()));
-            } catch (DuplicateKeyException e) {
+                ingredientService.put(new Ingredient(ingredientNameTextField.getText(), measureUnitTextField.getText()));
+            } catch (BusinessException e) {
                 logger.error("Attempt to create ingredient with existing name in DB");
-                ViewUtils.errorShow("Don't repeat!");
+                ViewUtils.errorShow(e.getMessage());
                 return;
             }
             measureUnitByIngredientName.put(ingredientNameTextField.getText(), measureUnitTextField.getText());

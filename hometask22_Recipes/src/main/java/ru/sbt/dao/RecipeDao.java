@@ -1,6 +1,7 @@
 package ru.sbt.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import ru.sbt.entities.Recipe;
 
 import java.util.*;
@@ -19,11 +20,15 @@ public class RecipeDao {
     public RecipeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    public Recipe findByName(String name) {
-        return jdbcTemplate.query(connection->connection.prepareStatement(SQL_SELECT_BY_NAME), preparedStatement->
-        preparedStatement.setString(1, name), resultSet-> new Recipe(resultSet.getString(1), resultSet.getString(2)));
+    public Optional<Recipe> findByName(String name) {
+        List<Recipe> recipes= jdbcTemplate.query(SQL_SELECT_BY_NAME, new Object[]{name}, (resultSet, rowNum)->
+                new Recipe(resultSet.getString(1),resultSet.getString(2)));
+        return (recipes.size()==0)? Optional.empty():Optional.of(recipes.get(0));
     }
 
+    /**
+     * @return Список всех рецептов.
+     */
     public List<Recipe> findAll() {
         return jdbcTemplate.query(SQL_SELECT_ALL, resultSet->{
             List<Recipe> recipes= new ArrayList<>();
@@ -34,6 +39,10 @@ public class RecipeDao {
         });
     }
 
+    /**
+     * Вносит рецепт в базу.
+     * @param recipe
+     */
     public void create(Recipe recipe) {
         jdbcTemplate.update(SQL_INSERT, recipe.getName(), recipe.getDescription());
     }

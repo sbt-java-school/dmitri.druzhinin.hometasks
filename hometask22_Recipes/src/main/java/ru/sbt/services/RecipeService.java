@@ -1,5 +1,6 @@
 package ru.sbt.services;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import ru.sbt.dao.IngredientDao;
@@ -7,24 +8,40 @@ import ru.sbt.dao.RecipeDao;
 import ru.sbt.entities.Recipe;
 
 import java.util.List;
+import java.util.Optional;
 
-public class RecipeService extends Service {
+public class RecipeService {
+    private IngredientDao ingredientDao;
     private RecipeDao recipeDao;
 
     public RecipeService(RecipeDao recipeDao, IngredientDao ingredientDao) {
-        super(ingredientDao);
         this.recipeDao = recipeDao;
+        this.ingredientDao=ingredientDao;
     }
 
+    /**
+     *
+     * @return Рецепт по имени с заполненными ингредиентами.
+     */
     @Transactional(readOnly = true)
-    public Recipe getByName(String recipeName){
+    public Optional<Recipe> getByName(String recipeName){
         validate(recipeName);
-        return recipeDao.findByName(recipeName);
+        Optional<Recipe> result=recipeDao.findByName(recipeName);
+        result.ifPresent(recipe -> recipe.setIngredients(ingredientDao.getByRecipeName(recipeName)));
+        return result;
     }
 
+    /**
+     *
+     * @return Все рецепты с заполненными ингредиентами.
+     */
     @Transactional(readOnly = true)
     public List<Recipe> getAll(){
-        return recipeDao.findAll();
+        List<Recipe> recipes=recipeDao.findAll();
+        for(Recipe recipe:recipes){
+            recipe.setIngredients(ingredientDao.getByRecipeName(recipe.getName()));
+        }
+        return recipes;
     }
 
     /**
@@ -33,9 +50,13 @@ public class RecipeService extends Service {
     @Transactional
     public void put(Recipe recipe){
         validate(recipe);
-        deleteByName(recipe.getName());
-        recipeDao.create(recipe);
-        ingredientDao.addByRecipeName(recipe.getName(), recipe.getIngredients());
+        try {
+            deleteByName(recipe.getName());
+            recipeDao.create(recipe);
+            ingredientDao.addByRecipeName(recipe.getName(), recipe.getIngredients());
+        }catch (DuplicateKeyException e){
+            throw new BusinessException("Don't repeat!");
+        }
     }
 
     /**
@@ -52,5 +73,10 @@ public class RecipeService extends Service {
             throw new BusinessException("No ingridients");
         }
         validate(recipe.getName());
+    }
+    private void validate(String name){
+        if(name==null || (!StringUtils.hasText(name))){
+            throw new BusinessException("No recipe name");
+        }
     }
 }
