@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class DataBaseCreator {
-    private static Logger logger= LoggerFactory.getLogger(DataBaseCreator.class);
+    private static Logger logger = LoggerFactory.getLogger(DataBaseCreator.class);
     private JdbcTemplate jdbcTemplate;
 
     public DataBaseCreator(JdbcTemplate jdbcTemplate) {
@@ -20,18 +20,18 @@ public class DataBaseCreator {
     }
 
     public static void createDatabase() {
-        ApplicationContext context=new ClassPathXmlApplicationContext("app-context-xml-database-creator.xml");
-        context.getBean(DataBaseCreator.class).executeScript("createTable.sql");
+        ApplicationContext context = new ClassPathXmlApplicationContext("app-context-xml-database-creator.xml");
+        context.getBean(DataBaseCreator.class).executeScript("/createTable.sql");
     }
 
     public void executeScript(String fileName) {
         try {
-            URL sqlResource = DataBaseCreator.class.getResource("/createTable.sql");
+            URL sqlResource = DataBaseCreator.class.getResource(fileName);
             String sqlScript = FileUtils.readFileToString(new File(sqlResource.getFile()));
             jdbcTemplate.execute(sqlScript);
             logger.info("The database is created");
         } catch (IOException e) {
-            logger.error("Sorry. Problems creating database. Can't read file "+fileName);
+            logger.error("Sorry. Problems creating database. Can't read file " + fileName);
             throw new IllegalArgumentException("Can not read file " + fileName);
         }
     }
