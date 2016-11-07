@@ -33,8 +33,11 @@ public class MainApplication extends Application {
             Properties properties = new Properties();
             properties.load(reader);
             String jdbcUrl = properties.getProperty("jdbc.url");
-            String[] pieces = jdbcUrl.split(":");
-            if (validate(pieces[pieces.length - 1])) {
+            String[] pieces = jdbcUrl.split("h2:");//слева протокол, справа директория.
+            if(pieces.length<2){//если директория не указана.
+                return false;
+            }
+            if (validate(pieces[1])) {//проверка директории.
                 return true;
             }
         } catch (IOException e) {
@@ -44,10 +47,20 @@ public class MainApplication extends Application {
     }
 
     private static boolean validate(String path) {
-        if (!StringUtils.hasText(path) || !new File(path).isDirectory()) {
+        if (!StringUtils.hasText(path)) {
             return false;
         }
-        return true;
+        boolean result=false;
+        File temp=new File(path);
+        try {
+            result=temp.createNewFile();
+            if(result){
+                temp.delete();
+            }
+        } catch (IOException e) {
+            logger.error(ERROR_MESSAGE);
+        }
+        return result;
     }
 
     @Override
