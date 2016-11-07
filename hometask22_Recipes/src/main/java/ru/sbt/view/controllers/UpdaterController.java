@@ -6,8 +6,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
-import ru.sbt.dao.IngredientDao;
-import ru.sbt.dao.RecipeDao;
 import ru.sbt.entities.Recipe;
 import ru.sbt.services.IngredientService;
 import ru.sbt.services.RecipeService;
@@ -47,7 +45,7 @@ public class UpdaterController extends AbstractController {
     @FXML
     private void saveChanges(ActionEvent event) {
         getRecipeFromView().ifPresent(recipe -> {
-            recipeService.put(recipe);
+            recipeService.save(recipe);
             mainController.notifyUpdate(recipe);
             mainController.closeUpdaterStage();
             logger.info("The changes are saved to recipe " + recipe.getName());

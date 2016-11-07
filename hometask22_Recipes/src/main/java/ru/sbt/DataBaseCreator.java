@@ -1,35 +1,38 @@
 package ru.sbt;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+
 public class DataBaseCreator {
+    private static Logger logger= LoggerFactory.getLogger(DataBaseCreator.class);
     private JdbcTemplate jdbcTemplate;
 
     public DataBaseCreator(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public static void main(String[] args) {
-        ApplicationContext context=new ClassPathXmlApplicationContext("app-context-xml.xml");
-        context.getBean(DataBaseCreator.class).executeScript("hometask22_Recipes/src/main/sql/create_table.sql");
+    public static void createDatabase() {
+        ApplicationContext context=new ClassPathXmlApplicationContext("app-context-xml-database-creator.xml");
+        context.getBean(DataBaseCreator.class).executeScript("createTable.sql");
     }
 
     public void executeScript(String fileName) {
         try {
-            String sqlScript = FileUtils.readFileToString(new File(fileName));
-            executeSql(sqlScript);
-            System.out.println(sqlScript);
+            URL sqlResource = DataBaseCreator.class.getResource("/createTable.sql");
+            String sqlScript = FileUtils.readFileToString(new File(sqlResource.getFile()));
+            jdbcTemplate.execute(sqlScript);
+            logger.info("The database is created");
         } catch (IOException e) {
+            logger.error("Sorry. Problems creating database. Can't read file "+fileName);
             throw new IllegalArgumentException("Can not read file " + fileName);
         }
-    }
-
-    private void executeSql(String sqlScript){
-        jdbcTemplate.execute(sqlScript);
     }
 }

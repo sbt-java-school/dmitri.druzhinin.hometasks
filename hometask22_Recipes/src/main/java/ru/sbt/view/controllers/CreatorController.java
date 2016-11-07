@@ -3,7 +3,6 @@ package ru.sbt.view.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import org.slf4j.Logger;
-import org.springframework.dao.DuplicateKeyException;
 import ru.sbt.services.BusinessException;
 import ru.sbt.services.IngredientService;
 import ru.sbt.services.RecipeService;
@@ -26,7 +25,7 @@ public class CreatorController extends AbstractController {
     private void createRecipe(ActionEvent event) {
         try {
             getRecipeFromView().ifPresent(recipe -> {
-                recipeService.put(recipe);
+                recipeService.add(recipe);
                 mainController.notifyCreate(recipe);
                 mainController.closeCreatorStage();
             });

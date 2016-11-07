@@ -45,18 +45,27 @@ public class RecipeService {
     }
 
     /**
-     * Предоставляет возможность сохранить в базу рецепт со всеми его ингредиентами и их количествами.
+     * Предоставляет возможность добавить в базу новый рецепт со всеми его ингредиентами и их количествами.
+     * @param recipe
      */
     @Transactional
-    public void put(Recipe recipe){
+    public void add(Recipe recipe){
         validate(recipe);
-        try {
-            deleteByName(recipe.getName());
+        try{
             recipeDao.create(recipe);
             ingredientDao.addByRecipeName(recipe.getName(), recipe.getIngredients());
         }catch (DuplicateKeyException e){
             throw new BusinessException("Don't repeat!");
         }
+    }
+
+    /**
+     * Предоставляет возможность перезаписать в базу рецепт со всеми его ингредиентами и их количествами.
+     */
+    @Transactional
+    public void save(Recipe recipe){
+        deleteByName(recipe.getName());
+        add(recipe);
     }
 
     /**
