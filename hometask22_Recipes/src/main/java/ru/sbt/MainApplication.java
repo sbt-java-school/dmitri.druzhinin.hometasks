@@ -33,13 +33,11 @@ public class MainApplication extends Application {
             Properties properties = new Properties();
             properties.load(reader);
             String jdbcUrl = properties.getProperty("jdbc.url");
-            String[] pieces = jdbcUrl.split("h2:");//слева протокол, справа директория.
-            if(pieces.length<2){//если директория не указана.
+            String[] pieces = jdbcUrl.split("h2:");//разбить url на 2 части. pieces[1]-путь к директории, который нужно проверить.
+            if (pieces.length < 2) {//если директория не указана.
                 return false;
             }
-            if (validate(pieces[1])) {//проверка директории.
-                return true;
-            }
+            return validate(pieces[1]);
         } catch (IOException e) {
             logger.error("jdbc.properties file missing");
         }
@@ -50,11 +48,11 @@ public class MainApplication extends Application {
         if (!StringUtils.hasText(path)) {
             return false;
         }
-        boolean result=false;
-        File temp=new File(path);
+        boolean result = false;
+        File temp = new File(path);
         try {
-            result=temp.createNewFile();
-            if(result){
+            result = temp.createNewFile();
+            if (result) {
                 temp.delete();
             }
         } catch (IOException e) {

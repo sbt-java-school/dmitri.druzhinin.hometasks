@@ -5,8 +5,8 @@ CRUD-операций с рецептами, а также с ингредиен
 во встроенном(embedded mode) режиме.
 
 Для первого запуска приложения необходимо в корне модуля выполнить команду mvn compile. Затем в файле target/classes/jdbc.properties
-указать любую директорию, куда будет поставлена база данных в формате jdbc.url=jdbc:h2:[pathToDB], например для ОС Linux
-jdbc.url=jdbc:h2:/home/user/Документы/mydb, для ОС Windows jdbc.url=jdbc:h2:C:\Program Files\mydb
+указать любую директорию куда будет поставлена база данных в формате jdbc.url=jdbc:h2:[pathToDB], например для ОС Linux
+jdbc.url=jdbc:h2:/home/user/Документы/mydb, для ОС Windows jdbc.url=jdbc:h2:C:/Program Files/mydb
 Далее осталось(при последующих запусках нужен только этот шаг) запустить приложение-в корне модуля вызвать mvn exec:java
 
 
