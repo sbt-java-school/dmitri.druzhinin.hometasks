@@ -17,3 +17,29 @@ DataSourceTransactionManager. Столкнулся с вопросом на ка
 на слое сервисов, а слой DAO желательно должен быть простым. Также по ходу выполнения работы возникла необходимость считывать
 properties файлы при инициализации бинов Spring, справился с помощью класса org.springframework.context.support.PropertySourcesPlaceholderConfigurer.
 Помимо Spring-Jdbc, впервые попробовал платформу JavaFX, написав слой View.
+
+Немного скринов. Вот пример поиска рецепта по названию:
+
+![Image alt](https://github.com/jjjCoder/Photos/raw/master/RecipesPhoto/Поиск по имени.png)
+
+
+
+Создание рецепта:
+
+![Image alt](https://github.com/jjjCoder/Photos/raw/master/RecipesPhoto/Создание рецепта.png)
+
+
+Допустим пользователь случайно попытался создать рецепт с уже имеющимся названием:
+
+![Image alt](https://github.com/jjjCoder/Photos/raw/master/RecipesPhoto/Попытка повторения.png)
+
+
+Можно просмотреть список всех ингредиентов в базе:
+
+![Image alt](https://github.com/jjjCoder/Photos/raw/master/RecipesPhoto/Список всех ингридиентов.png)
+
+
+Удалить ингредиент, на который ссылаются блюда не получится:
+
+![Image alt](https://github.com/jjjCoder/Photos/raw/master/RecipesPhoto/Попытка удаления.png)
+
