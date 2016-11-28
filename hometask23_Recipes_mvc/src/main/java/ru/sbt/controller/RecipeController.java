@@ -107,7 +107,7 @@ public class RecipeController {
     }
 
     /**
-     *Этот обработчие
+     *Этот обработчик меняет описание существующего рецепта и обновляет этот рецепт в хранилище.
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(HttpSession httpSession, @RequestParam("description") String description) {

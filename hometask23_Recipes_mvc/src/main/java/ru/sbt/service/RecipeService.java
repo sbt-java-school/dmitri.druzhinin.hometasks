@@ -62,6 +62,7 @@ public class RecipeService {
         if (recipe != null) {
             return mapper.map(recipe, RecipeDto.class);
         } else {
+            logger.info("Not exists " + name);
             throw new BusinessException("Recipe with same name not exists");
         }
     }

@@ -50,7 +50,7 @@ public class IngredientService {
         if (ingredient != null) {
             return mapper.map(ingredient, IngredientDto.class);
         } else {
-            logger.info("Duplicate key " + name);
+            logger.info("Not exists " + name);
             throw new BusinessException("Ingredient with same name not exists");
         }
     }
