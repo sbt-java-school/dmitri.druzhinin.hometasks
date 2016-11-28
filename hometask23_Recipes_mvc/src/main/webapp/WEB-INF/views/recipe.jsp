@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>${recipeDto.name}</h1><br>
-<table>
+<table border="1">
     <thead>
     <tr>
         <th>Ингредиент</th>
@@ -37,7 +37,7 @@
 <h2>Добавление ингредиента в рецепт</h2>
 <sf:form action="/recipes-jpa-mvc/relation/add" method="post" modelAttribute="relationDto">
     <sf:select path="ingredientName" items="${ingredients}"/>
-    <sf:input path="amount"/>
+    <sf:input path="amount" type="number"/>
     <sf:input path="unit"/>
     <input type="submit" value="Добавить">
 </sf:form>
